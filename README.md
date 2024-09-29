@@ -1,6 +1,8 @@
 ## MIG Algo Building Framework
 
 For use for members of MIG to research, develop, and backtest algorithmic trading strategies
+CHECK example_main.py for example usage of framework
+CHECK MIG-Docs: https://docs.michiganinvestmentgroup.com/ for usage of Conda Env
 
 ### Example use of Data Loading from Polygon
 
