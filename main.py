@@ -1,5 +1,4 @@
 from data.data_manager import DataManager
-from strategies.example_strategy import MovingAverageStrategy
 from backtester.backtester import Backtester
 import matplotlib.pyplot as plt
 import numpy as np
@@ -39,44 +38,49 @@ plt.show()
 
 
 open_prices = []
-stock_open_data = prepared_data['o']
-open_prices.append(stock_open_data.values)
-open_prices = np.stack(open_prices)
+open_prices = np.stack(prepared_data['o'])
 trades = np.zeros_like(open_prices)
 
-fast_sma = ta.SMA(open_prices[0], timeperiod=5)
-slow_sma = ta.SMA(open_prices[0], timeperiod=40)
+fast_sma = ta.SMA(prepared_data['o'], timeperiod=5)
+slow_sma = ta.SMA(prepared_data['o'], timeperiod=40)
 
-for day in range(1, len(open_prices[0])-1):
+prepared_data = prepared_data.copy()  # Ensure you're modifying a copy
+prepared_data['trades'] = 0
+
+# Loop through each day to determine buy/sell signals using .iloc for positional indexing
+for day in range(1, len(prepared_data) - 1):
     
     # Buy: fast SMA crosses above slow SMA
-    if fast_sma[day] > slow_sma[day] and fast_sma[day-1] <= slow_sma[day-1]:
-        # we are trading the next day's open price
-        trades[0][day+1] = 1
+    if fast_sma.iloc[day] > slow_sma.iloc[day] and fast_sma.iloc[day - 1] <= slow_sma.iloc[day - 1]:
+        prepared_data.iloc[day + 1, prepared_data.columns.get_loc('trades')] = 1
     
     # Sell/short: fast SMA crosses below slow SMA
-    elif fast_sma[day] < slow_sma[day] and fast_sma[day-1] >= slow_sma[day-1]:
-        # we are trading the next day's open price
-        trades[0][day+1] = -1
-    # else do nothing
+    elif fast_sma.iloc[day] < slow_sma.iloc[day] and fast_sma.iloc[day - 1] >= slow_sma.iloc[day - 1]:
+        prepared_data.iloc[day + 1, prepared_data.columns.get_loc('trades')] = -1
+    
+    # Else do nothing
     else:
-        trades[0][day+1] = 0
+        prepared_data.iloc[day + 1, prepared_data.columns.get_loc('trades')] = 0
 
-print(trades)
+# Now print the 'trades' column
+print(prepared_data['trades'])
 
-portfolio_value, sharpe_ratio = eval_actions(trades, open_prices, cash=25000, verbose=True)
+input2 = []
+input2.append(open_prices)
+
+#portfolio_value, sharpe_ratio = eval_actions(input, input2, cash=25000, verbose=True)
 #print(f"\nPortfolio value: {portfolio_value}")
-print(f"Sharpe ratio: {sharpe_ratio}")
+#print(f"Sharpe ratio: {sharpe_ratio}")
 
 
-plt.figure(figsize=(8, 6))
+# plt.figure(figsize=(8, 6))
 
-plt.plot(portfolio_value, label=f'{TICKER}')
+# plt.plot(portfolio_value, label=f'{TICKER}')
 
-plt.xlabel('Day')
-plt.ylabel('Portoflio Value')
-plt.title('Algorithm Performance')
-plt.show()
+# plt.xlabel('Day')
+# plt.ylabel('Portoflio Value')
+# plt.title('Algorithm Performance')
+# plt.show()
 
 
 # Create and run strategy

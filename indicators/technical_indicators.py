@@ -1,13 +1,13 @@
 # trading_framework/indicators/technical_indicators.py
 
-import pandas as pd
-import numpy as np
-import talib
+import pandas as pd # type: ignore
+import numpy as np # type: ignore
+import talib # type: ignore
 
 class TechnicalIndicators:
     @staticmethod
     def SMA(data, period=14):
-        return talib.SMA(data['c'], timeperiod=period)
+        return talib.SMA(data['o'], timeperiod=period)
 
     @staticmethod
     def EMA(data, period=14):
