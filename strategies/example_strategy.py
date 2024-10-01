@@ -15,7 +15,6 @@ class MovingAverageCrossStrategy(BaseStrategy):
     def set_delay(self, delay):
         self.delay = delay
 
-
     def generate_signals(self):
         """
         This method overrides the abstract method from BaseStrategy.
