@@ -55,14 +55,14 @@ class MovingAverageCrossStrategy(BaseStrategy):
 
         for day in range(1, len(self.data) - 1):
             if self.data['fast_mavg'][day] > self.data['slow_mvag'][day] and self.data['fast_mavg'][day - 1] <= self.data['slow_mvag'][day - 1]:
-                self.data.iloc[day + 1, self.data.columns.get_loc('trades')] = 1
+                self.data.iloc[day + 1, self.data.columns.get_loc('positions')] = 1
     
             # Sell/short: fast SMA crosses below slow SMA
             elif self.data['fast_mavg'][day] < self.data['slow_mvag'][day] and self.data['fast_mavg'][day - 1] >= self.data['slow_mvag'][day - 1]:
-                self.data.iloc[day + 1, self.data.columns.get_loc('trades')] = -1
+                self.data.iloc[day + 1, self.data.columns.get_loc('positions')] = -1
             
             # Else do nothing
             else:
-                self.data.iloc[day + 1, self.data.columns.get_loc('trades')] = 0
+                self.data.iloc[day + 1, self.data.columns.get_loc('positions')] = 0
         
         return self.data
