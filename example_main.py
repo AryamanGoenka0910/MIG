@@ -19,6 +19,7 @@ END_DATE = START_DATE - timedelta(days=365*2) #end date is how many days in the 
 # Step 1: Data Management
 data_manager = DataManager(API_KEY)
 data = data_manager.fetch_data(TICKER, START_DATE, END_DATE)
+data_manager.save_to_csv(filename="temp.csv")
 
 # Step 2: Data Visualization
 visualizer = DataVisualization()

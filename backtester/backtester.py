@@ -1,18 +1,23 @@
-import pandas as pd # type: ignore
+# trading_framework/backtester/backtester.py
+
+import pandas as pd
 
 class Backtester:
-    def __init__(self, strategy):
-        self.strategy = strategy
+    def __init__(self, data, signals, initial_capital=100000.0):
+        self.data = data
+        self.signals = signals
+        self.initial_capital = initial_capital
 
-    def backtest(self):
-        self.strategy.generate_signals()
-        initial_capital = float(100000.0)
-        positions = pd.DataFrame(index=self.strategy.data.index).fillna(0.0)
-        portfolio = positions.multiply(self.strategy.data['c'], axis=0)
+    def backtest_portfolio(self):
+        positions = pd.DataFrame(index=self.signals.index).fillna(0.0)
+        positions['position'] = 100 * self.signals['signal']  # Example: 100 shares
+
+        portfolio = positions.multiply(self.data['c'], axis=0)
         pos_diff = positions.diff()
 
-        portfolio['holdings'] = (positions.multiply(self.strategy.data['c'], axis=0)).sum(axis=1)
-        portfolio['cash'] = initial_capital - (pos_diff.multiply(self.strategy.data['c'], axis=0)).sum(axis=1).cumsum()   
+        portfolio['holdings'] = positions.multiply(self.data['c'], axis=0).sum(axis=1)
+        portfolio['cash'] = self.initial_capital - (pos_diff.multiply(self.data['c'], axis=0)).sum(axis=1).cumsum()
         portfolio['total'] = portfolio['cash'] + portfolio['holdings']
         portfolio['returns'] = portfolio['total'].pct_change()
+
         return portfolio
