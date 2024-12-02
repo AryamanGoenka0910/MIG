@@ -24,6 +24,7 @@ def eval_actions(actions, prices, cash=25000, verbose=True):
     cash = cash
     positions = [0] * len(actions)
     port_values = [0] * len(actions[0])
+    print(len(actions))
 
     # shorts positions are closed in FIFO ordering
     # ticker -> dequeue(short price, short amount)

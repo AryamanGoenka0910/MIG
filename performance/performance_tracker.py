@@ -18,6 +18,7 @@ class PerformanceTracker:
         print("Annual Return:", self.annual_return)
         print("Annual Volatility:", self.annual_volatility)
         print("Sharpe Ratio:", self.sharpe_ratio)
+        print("Cumulative Returns:", self.cumulative_returns)
 
     def plot_performance(self):
         plt.figure(figsize=(10, 6))

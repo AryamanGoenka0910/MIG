@@ -8,7 +8,7 @@ class BaseStrategy:
         self.signals = pd.DataFrame(index=data.index)
         self.positions = pd.DataFrame(index=data.index)
 
-    def generate_signals(self):
+    def generate_positions(self):
         raise NotImplementedError("Should implement generate_signals()")
 
     def backtest_portfolio(self, initial_capital=100000.0):

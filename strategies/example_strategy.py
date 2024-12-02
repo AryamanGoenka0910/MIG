@@ -15,18 +15,18 @@ class MovingAverageCrossStrategy(BaseStrategy):
     def set_delay(self, delay):
         self.delay = delay
 
-    def generate_signals(self):
+    def generate_positions(self):
         """
         This method overrides the abstract method from BaseStrategy.
         It decides which signal generation method to call based on the delay flag.
         """
         if self.delay:
-            return self.generate_signals_with_delay()
+            return self.generate_positions_with_delay()
         else:
-            return self.generate_signals_without_delay()
+            return self.generate_positions_without_delay()
 
     ##uses mavgs to trade on trading day with signals
-    def generate_signals_without_delay(self):
+    def generate_positions_without_delay(self):
         # 1. Calculate short-term and long-term moving averages
         self.data['fast_mavg'] = TechnicalIndicators.SMA(self.data, self.short_window)
         self.data['slow_mvag'] = TechnicalIndicators.SMA(self.data, self.long_window)
@@ -46,7 +46,7 @@ class MovingAverageCrossStrategy(BaseStrategy):
         return self.data
     
     #uses mavgs to trade on next trading day based on previous day signal
-    def generate_signals_with_delay(self):
+    def generate_positions_with_delay(self):
         self.data['fast_mavg'] = TechnicalIndicators.SMA(self.data, self.short_window)
         self.data['slow_mvag'] = TechnicalIndicators.SMA(self.data, self.long_window)
 

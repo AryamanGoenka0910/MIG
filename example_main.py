@@ -30,7 +30,7 @@ visualizer.visualize_vals(data, TICKER)
 
 # Step 3: Strategy Development
 strategy = MovingAverageCrossStrategy(data)
-signals = strategy.generate_signals()
+signals = strategy.generate_positions()
 
 print(signals)
 
@@ -44,10 +44,16 @@ plt.legend()
 backtester = Backtester(data, signals)
 portfolio = backtester.backtest_portfolio()
 
-# # Step 4: Performance Tracking
-# performance_tracker = PerformanceTracker(portfolio)
-# performance_tracker.calculate_metrics()
-# performance_tracker.generate_report()
-# performance_tracker.plot_performance()
+# Step 4: Performance Tracking
+performance_tracker = PerformanceTracker(portfolio)
+performance_tracker.calculate_metrics()
+performance_tracker.generate_report()
+performance_tracker.plot_performance()
 
-print(portfolio)
+#print(portfolio)
+
+#with pd.option_context('display.max_rows', None, 'display.max_columns', None):  # more options can be specified also
+    #print(df)
+
+
+    
